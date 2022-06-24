@@ -11,7 +11,7 @@ public class SchoolInfo {
     private String region;
     private String schoolName;
     private String schoolId;
-
+    private String homePage;
     public String getRegion() {
         return region;
     }
@@ -35,6 +35,15 @@ public class SchoolInfo {
     public void setSchoolId(String schoolId) {
         this.schoolId = schoolId;
     }
+
+    public String getHomePage() {
+        return homePage;
+    }
+
+    public void setHomePage(String homePage) {
+        this.homePage = homePage;
+    }
+
     public List<SchoolInfo> getSchoolLists(String json) {
         List<SchoolInfo> list = new ArrayList<>();
         try {
@@ -46,6 +55,7 @@ public class SchoolInfo {
                 info.setSchoolId(School.getString("SD_SCHUL_CODE"));
                 info.setSchoolName(School.getString("SCHUL_NM"));
                 info.setRegion(School.getString("ATPT_OFCDC_SC_NM"));
+                info.setHomePage(School.getString("HMPG_ADRES"));
                 list.add(info);
             }
         } catch (JSONException e) {
@@ -53,4 +63,5 @@ public class SchoolInfo {
         }
         return list;
     }
+
 }
