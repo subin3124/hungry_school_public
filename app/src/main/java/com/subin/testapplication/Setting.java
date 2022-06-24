@@ -12,10 +12,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class Setting extends AppCompatActivity {
 
@@ -47,6 +49,9 @@ public class Setting extends AppCompatActivity {
 
                             @Override
                             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                                ResponseBody body = response.body();
+                                SchoolInfo info = new SchoolInfo();
+                                List<SchoolInfo> infos = info.getSchoolLists(body.string());
 
                             }
                         };

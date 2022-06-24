@@ -10,10 +10,11 @@ import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
-public class Food {
+public class Neis {
     private String cityEducationCode;
     private String schoolCode;
     private String Date;
+    private String schoolName;
     private final String apiKey = "8cedbf1c95ca4c9ea741727f04e7b6a3";
 
     public FoodInfo parseJsonFoodList(JSONObject obj) {
@@ -48,6 +49,22 @@ public class Food {
                 .build();
         Request request = new Request.Builder().url(neisUrl).get().build();
         client.newCall(request).enqueue(callback);
+
+    }
+
+    public void searchSchoolId(Callback callback) {
+        OkHttpClient client = new OkHttpClient();
+        HttpUrl httpUrl = new HttpUrl.Builder()
+                .scheme("https")
+                .host("open.neis.go.kr")
+                .addPathSegment("hub")
+                .addPathSegment("schoolInfo")
+                .addQueryParameter("KEY",apiKey)
+                .addQueryParameter("Type","json")
+                .addQueryParameter("SCHUL_NM",schoolName)
+                .build();
+        Request request = new Request.Builder().url(httpUrl).get().build();
+        client.newCall(request).enqueue(callback);
     }
     public String getCityEducationCode() {
         return cityEducationCode;
@@ -73,4 +90,11 @@ public class Food {
         Date = date;
     }
 
+    public String getSchoolName() {
+        return schoolName;
+    }
+
+    public void setSchoolName(String schoolName) {
+        this.schoolName = schoolName;
+    }
 }

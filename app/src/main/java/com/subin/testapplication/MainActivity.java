@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         clickBtn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Food food = new Food();
+                Neis neis = new Neis();
                 Callback callback = new Callback() {
                     @Override
                     public void onFailure(@NonNull Call call, @NonNull IOException e) {
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                         ResponseBody body = response.body();
                         try {
-                            FoodInfo foodData = food.parseJsonFoodList(new JSONObject(body.string()));
+                            FoodInfo foodData = neis.parseJsonFoodList(new JSONObject(body.string()));
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -65,12 +65,12 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 };
-                food.setCityEducationCode("E10");
-                food.setSchoolCode("7310259");
+                neis.setCityEducationCode("E10");
+                neis.setSchoolCode("7310259");
                 Date date = new Date();
                 SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-                food.setDate(format.format(date));
-                food.getSchoolFoodList(callback);
+                neis.setDate(format.format(date));
+                neis.getSchoolFoodList(callback);
             }
         });
     }

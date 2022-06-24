@@ -24,6 +24,5 @@
             android:layout_height="match_parent"
             android:text="검색"
             android:id="@+id/btnSearchSchool"/>
-
     </LinearLayout>
 </LinearLayout>
