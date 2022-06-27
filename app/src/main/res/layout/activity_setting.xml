@@ -22,4 +22,9 @@
             android:layout_marginLeft="20dp"
             android:id="@+id/openSearchSchoolView"/>
     </LinearLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="적용"
+        android:id="@+id/SettingsComplete"/>
 </LinearLayout>

@@ -10,6 +10,7 @@ import java.util.List;
 public class SchoolInfo {
     private String region;
     private String schoolName;
+    private String regionCode;
     private String schoolId;
     private String homePage;
     public String getRegion() {
@@ -44,6 +45,14 @@ public class SchoolInfo {
         this.homePage = homePage;
     }
 
+    public String getRegionCode() {
+        return regionCode;
+    }
+
+    public void setRegionCode(String regionCode) {
+        this.regionCode = regionCode;
+    }
+
     public List<SchoolInfo> getSchoolLists(String json) {
         List<SchoolInfo> list = new ArrayList<>();
         try {
@@ -56,6 +65,7 @@ public class SchoolInfo {
                 info.setSchoolName(School.getString("SCHUL_NM"));
                 info.setRegion(School.getString("ATPT_OFCDC_SC_NM"));
                 info.setHomePage(School.getString("HMPG_ADRES"));
+                info.setRegionCode(School.getString("ATPT_OFCDC_SC_CODE"));
                 list.add(info);
             }
         } catch (JSONException e) {

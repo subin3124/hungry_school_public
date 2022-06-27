@@ -2,6 +2,8 @@ package com.subin.testapplication;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Entity;
+import androidx.room.Room;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -28,11 +30,14 @@ public class Setting extends AppCompatActivity {
     Button btnSearchSchool;
     ListView findSchoolListView;
     SchoolListAdapter adapter;
+    Button settingsFinished;
+    SettingsEntity entity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         openSearchSchoolView = findViewById(R.id.openSearchSchoolView);
+        settingsFinished = findViewById(R.id.SettingsComplete);
         Dialog searchSchoolDialog = new Dialog(this);
         openSearchSchoolView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,7 +63,7 @@ public class Setting extends AppCompatActivity {
 
                             @Override
                             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                                try{
+
                                     ResponseBody body = response.body();
                                     SchoolInfo info = new SchoolInfo();
                                     List<SchoolInfo> infos = info.getSchoolLists(body.string());
@@ -70,10 +75,6 @@ public class Setting extends AppCompatActivity {
                                         }
                                     });
 
-                                }catch (Exception e){
-                                    e.printStackTrace();
-                                }
-
 
                             }
                         };
@@ -82,6 +83,8 @@ public class Setting extends AppCompatActivity {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                 openSearchSchoolView.setText(adapter.getItem(i).getSchoolId());
+                                entity.schoolCode = adapter.getItem(i).getSchoolId();
+                                entity.educationStateCode = adapter.getItem(i).getRegionCode();
                                 searchSchoolDialog.dismiss();
 
                             }
@@ -89,6 +92,20 @@ public class Setting extends AppCompatActivity {
                     }
 
                 });
+            }
+        });
+        //a
+        settingsFinished.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SettingsDB db = Room.databaseBuilder(getApplicationContext(),SettingsDB.class,"configuration").build();
+                SettingsDAO dao = db.dao();
+                entity.schoolCode = openSearchSchoolView.getText().toString();
+                if(dao.getSettings()!=null){
+                    dao.UpdateSettings(entity);
+                }else{
+                    dao.InitializeSettings(entity);
+                }
             }
         });
     }
