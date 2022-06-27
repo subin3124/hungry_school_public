@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     TextView todayDate;
     TextView schoolName;
     Button clickBtn1;
+    Button btnSettigns;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         textFood = findViewById(R.id.textFood);
         todayDate = findViewById(R.id.todayDate);
         schoolName = findViewById(R.id.schoolName);
+        btnSettigns = findViewById(R.id.configBtn);
         clickBtn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,6 +74,12 @@ public class MainActivity extends AppCompatActivity {
                 SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
                 neis.setDate(format.format(date));
                 neis.getSchoolFoodList(callback);
+            }
+        });
+        btnSettigns.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(),Setting.class));
             }
         });
     }

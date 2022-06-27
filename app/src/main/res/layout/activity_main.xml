@@ -32,5 +32,10 @@
            android:text="오늘의 급식은?"
            android:id="@+id/clickBtn1"/>
    </LinearLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="설정"
+        android:id="@+id/configBtn"/>
 
 </LinearLayout>

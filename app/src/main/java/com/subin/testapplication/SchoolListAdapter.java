@@ -8,13 +8,14 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SchoolListAdapter extends BaseAdapter {
     Context context;
     LayoutInflater inflater;
-    ArrayList<SchoolInfo> schoolInfo;
+    List<SchoolInfo> schoolInfo;
 
-    public SchoolListAdapter(Context context, ArrayList<SchoolInfo> schoolInfo) {
+    public SchoolListAdapter(Context context, List<SchoolInfo> schoolInfo) {
         this.context = context;
         this.schoolInfo = schoolInfo;
         inflater = LayoutInflater.from(context);

@@ -15,19 +15,20 @@
             android:textSize="20sp"
             android:text="학교 검색 : "/>
         <EditText
-            android:layout_width="240dp"
+            android:layout_width="50dp"
             android:layout_height="match_parent"
             android:id="@+id/inputSchoolName"
             android:background="@drawable/inputbox_background"/>
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="검색"
             android:id="@+id/btnSearchSchool"/>
     </LinearLayout>
+
     <ListView
         android:id="@+id/findSchoolDialogListView"
-        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_marginTop="30dp" />
 </LinearLayout>

@@ -7,8 +7,10 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -24,6 +26,8 @@ public class Setting extends AppCompatActivity {
     TextView openSearchSchoolView;
     EditText inputSeachSchool;
     Button btnSearchSchool;
+    ListView findSchoolListView;
+    SchoolListAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,13 +38,18 @@ public class Setting extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 searchSchoolDialog.setContentView(R.layout.find_school_dialog_layout);
-                searchSchoolDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
                 inputSeachSchool = searchSchoolDialog.findViewById(R.id.inputSchoolName);
                 btnSearchSchool = searchSchoolDialog.findViewById(R.id.btnSearchSchool);
+                findSchoolListView = searchSchoolDialog.findViewById(R.id.findSchoolDialogListView);
                 searchSchoolDialog.show();
+         //       searchSchoolDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 btnSearchSchool.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        Neis neis = new Neis();
+                        neis.setSchoolName(inputSeachSchool.getText().toString());
+
                         Callback searchSchoolCallback = new Callback() {
                             @Override
                             public void onFailure(@NonNull Call call, @NonNull IOException e) {
@@ -49,13 +58,36 @@ public class Setting extends AppCompatActivity {
 
                             @Override
                             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                                ResponseBody body = response.body();
-                                SchoolInfo info = new SchoolInfo();
-                                List<SchoolInfo> infos = info.getSchoolLists(body.string());
+                                try{
+                                    ResponseBody body = response.body();
+                                    SchoolInfo info = new SchoolInfo();
+                                    List<SchoolInfo> infos = info.getSchoolLists(body.string());
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            adapter = new SchoolListAdapter(getApplicationContext(),infos);
+                                            findSchoolListView.setAdapter(adapter);
+                                        }
+                                    });
+
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
+
 
                             }
                         };
+                        neis.searchSchoolId(searchSchoolCallback);
+                        findSchoolListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                openSearchSchoolView.setText(adapter.getItem(i).getSchoolId());
+                                searchSchoolDialog.dismiss();
+
+                            }
+                        });
                     }
+
                 });
             }
         });
