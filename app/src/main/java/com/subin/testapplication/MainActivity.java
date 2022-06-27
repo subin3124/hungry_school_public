@@ -3,6 +3,8 @@ package com.subin.testapplication;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
 
 import android.content.Intent;
 import android.os.Build;
@@ -68,12 +70,27 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 };
-                neis.setCityEducationCode("E10");
-                neis.setSchoolCode("7310259");
-                Date date = new Date();
-                SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-                neis.setDate(format.format(date));
-                neis.getSchoolFoodList(callback);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        SettingsDB db = Room.databaseBuilder(getApplicationContext(), SettingsDB.class, "settings").build();
+                        SettingsDAO dao = db.dao();
+                        if(dao.getSettings()!=null){
+                            neis.setCityEducationCode(dao.getSettings().educationStateCode);
+                            neis.setSchoolCode(dao.getSettings().schoolCode);
+                            Date date = new Date();
+                            SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+                            neis.setDate(format.format(date));
+                            neis.getSchoolFoodList(callback);
+                        }else{
+                            startActivity(new Intent(getApplicationContext(),Setting.class));
+                        }
+                    }
+                }).start();
+
+
+
+
             }
         });
         btnSettigns.setOnClickListener(new View.OnClickListener() {

@@ -7,6 +7,7 @@ import androidx.room.Room;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -82,10 +83,16 @@ public class Setting extends AppCompatActivity {
                         findSchoolListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                openSearchSchoolView.setText(adapter.getItem(i).getSchoolId());
-                                entity.schoolCode = adapter.getItem(i).getSchoolId();
-                                entity.educationStateCode = adapter.getItem(i).getRegionCode();
-                                searchSchoolDialog.dismiss();
+                                try{
+                                    entity = new SettingsEntity();
+                                    openSearchSchoolView.setText(adapter.getItem(i).getSchoolId());
+                                    entity.setSchoolCode(adapter.getItem(i).getSchoolId());
+                                    entity.setEducationStateCode(adapter.getItem(i).getRegionCode());
+                                    searchSchoolDialog.cancel();
+                                }catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
 
                             }
                         });
@@ -94,18 +101,29 @@ public class Setting extends AppCompatActivity {
                 });
             }
         });
-        //a
+
         settingsFinished.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SettingsDB db = Room.databaseBuilder(getApplicationContext(),SettingsDB.class,"configuration").build();
-                SettingsDAO dao = db.dao();
-                entity.schoolCode = openSearchSchoolView.getText().toString();
-                if(dao.getSettings()!=null){
-                    dao.UpdateSettings(entity);
-                }else{
-                    dao.InitializeSettings(entity);
-                }
+          new Thread(new Runnable() {
+              @Override
+              public void run() {
+                  try{
+                      SettingsDB db = Room.databaseBuilder(getApplicationContext(),SettingsDB.class,"settings").build();
+                      SettingsDAO dao = db.dao();
+                      entity.schoolCode = openSearchSchoolView.getText().toString();
+                      if(dao.getSettings()!=null){
+                          Log.i("중간점","DB업데이트 ");
+                          dao.UpdateSettings(entity);
+                      }else{
+                          dao.InitializeSettings(entity);
+                      }
+                  }catch (Exception e) {
+                      e.printStackTrace();
+                  }
+              }
+          }).start();
+
             }
         });
     }
