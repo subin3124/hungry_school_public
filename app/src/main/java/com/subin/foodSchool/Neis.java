@@ -15,7 +15,7 @@ public class Neis {
     private String schoolCode;
     private String Date;
     private String schoolName;
-    private final String apiKey = "8cedbf1c95ca4c9ea741727f04e7b6a3";
+    private final String apiKey = "xxxxxxxxxxxxxxxxxx";
 
     public FoodInfo parseJsonFoodList(JSONObject obj) {
         JSONArray foodJson = null;
