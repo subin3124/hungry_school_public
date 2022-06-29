@@ -36,6 +36,7 @@ dependencies {
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.10.0'
     implementation 'androidx.room:room-common:2.4.2'
     implementation 'androidx.room:room-runtime:2.4.2'
+    implementation 'com.google.android.gms:play-services-wearable:17.1.0'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

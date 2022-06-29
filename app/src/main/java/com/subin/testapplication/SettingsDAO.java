@@ -14,6 +14,6 @@ public interface SettingsDAO {
     @Insert
     void InitializeSettings(SettingsEntity entity);
 
-    @Update
-    void UpdateSettings(SettingsEntity entity);
+    @Query("update settings set education_state_code=:edustate, school_code=:schoolCode where id=1")
+    void UpdateSettings(String edustate, String schoolCode);
 }

@@ -6,6 +6,7 @@ import androidx.room.Entity;
 import androidx.room.Room;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -113,10 +114,17 @@ public class Setting extends AppCompatActivity {
                       SettingsDAO dao = db.dao();
                       entity.schoolCode = openSearchSchoolView.getText().toString();
                       if(dao.getSettings()!=null){
-                          Log.i("중간점","DB업데이트 ");
-                          dao.UpdateSettings(entity);
+                         try{
+                             dao.UpdateSettings(entity.educationStateCode,entity.schoolCode);
+                             Log.i("중간점","DB업데이트 ");
+                             startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                         }catch (Exception e) {
+                             e.printStackTrace();
+                         }
+
                       }else{
                           dao.InitializeSettings(entity);
+                          startActivity(new Intent(getApplicationContext(),MainActivity.class));
                       }
                   }catch (Exception e) {
                       e.printStackTrace();
