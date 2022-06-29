@@ -1,4 +1,4 @@
-package com.subin.testapplication;
+package com.subin.foodSchool;
 import android.util.Log;
 
 import org.json.JSONArray;

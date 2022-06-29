@@ -1,25 +1,22 @@
-package com.subin.testapplication;
+package com.subin.foodSchool;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
-import androidx.room.RoomDatabase;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.json.JSONArray;
+import com.subin.testapplication.R;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 
 import okhttp3.Call;
@@ -60,9 +57,12 @@ public class MainActivity extends AppCompatActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    Watch watch = new Watch();
+                                    watch.OnChangedFoods(getApplicationContext(),foodData);
                                     textFood.setText(foodData.getFoodList());
                                     todayDate.setText(foodData.getDate()+"\n");
                                     schoolName.setText(foodData.getSchoolName());
+
                                 }
                             });
                         } catch (JSONException e) {

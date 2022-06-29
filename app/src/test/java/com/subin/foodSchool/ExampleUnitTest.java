@@ -1,4 +1,4 @@
-package com.subin.testapplication;
+package com.subin.foodSchool;
 
 import org.junit.Test;
 

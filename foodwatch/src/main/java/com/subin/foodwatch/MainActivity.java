@@ -2,6 +2,7 @@ package com.subin.foodwatch;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,49 +16,72 @@ import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.Wearable;
 import com.subin.foodwatch.databinding.ActivityMainBinding;
 
-public class MainActivity extends Activity implements DataClient.OnDataChangedListener {
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+
+public class MainActivity extends Activity  {
 
     private TextView TxtSchool;
     private TextView TxtDate;
     private TextView TxtFoodsList;
     private ActivityMainBinding binding;
+    private Neis neis;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         TxtSchool= binding.School;
+        neis = new Neis();
         TxtDate = binding.Date;
         TxtFoodsList = binding.foods;
-    }
+        Callback callback = new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
 
-    @Override
-    public void onDataChanged(@NonNull DataEventBuffer dataEventBuffer) {
-        for(DataEvent event : dataEventBuffer) {
-            if(event.getType()==DataEvent.TYPE_CHANGED){
-                DataItem item = event.getDataItem();
-                if(item.getUri().getPath().compareTo("/foods")==0) {
-                    DataMap dataMap = DataMapItem.fromDataItem(item).getDataMap();
-                   TxtSchool.setText(dataMap.getString("School"));
-                   TxtDate.setText(dataMap.getString("Date"));
-                   TxtFoodsList.setText(dataMap.getString("Foods"));
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+
+                ResponseBody body = response.body();
+                try {
+                    FoodInfo foodData = neis.parseJsonFoodList(new JSONObject(body.string()));
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            TxtSchool.setText(foodData.getSchoolName());
+                            TxtDate.setText(foodData.getDate());
+                            TxtFoodsList.setText(foodData.getFoodList());
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
-        }
+        };
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Date date = new Date();
+                SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+                neis.setDate(format.format(date));
+                neis.setSchoolCode("7310259");
+                neis.setCityEducationCode("E10");
+                neis.getSchoolFoodList(callback);
+            }
+        }).start();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Wearable.getDataClient(this).removeListener(this);
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Wearable.getDataClient(this).addListener(this);
-    }
 }

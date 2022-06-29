@@ -1,8 +1,7 @@
-package com.subin.testapplication;
+package com.subin.foodSchool;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Entity;
 import androidx.room.Room;
 
 import android.app.Dialog;
@@ -10,12 +9,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.subin.testapplication.R;
 
 import java.io.IOException;
 import java.util.List;

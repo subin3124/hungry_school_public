@@ -1,7 +1,6 @@
-package com.subin.testapplication;
+package com.subin.foodSchool;
 
 import androidx.room.Database;
-import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 @Database(version = 1, entities = {SettingsEntity.class},exportSchema = false)
